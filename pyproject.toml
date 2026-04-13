@@ -1,0 +1,60 @@
+[project]
+name = "stock-movement-analyzer"
+version = "0.1.0"
+description = "Analyze stock price moves with Yahoo Finance, Tavily, LangGraph, and local LLMs."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+dependencies = [
+    "langchain-core",
+    "langchain-ollama",
+    "langchain-openai",
+    "langgraph",
+    "python-dotenv",
+    "tavily-python",
+    "yfinance",
+]
+
+[project.optional-dependencies]
+dev = ["ruff"]
+
+[project.scripts]
+stock-movement-analyzer = "stock_movement_analyzer.cli:main"
+
+[build-system]
+requires = ["setuptools>=73.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["stock_movement_analyzer"]
+package-dir = { "stock_movement_analyzer" = "src" }
+
+[tool.setuptools.package-data]
+stock_movement_analyzer = ["py.typed"]
+
+[tool.ruff]
+lint.select = [
+    "E",
+    "F",
+    "I",
+    "D",
+    "D401",
+    "T201",
+    "UP",
+]
+lint.ignore = [
+    "UP006",
+    "UP007",
+    "UP035",
+    "D417",
+    "E501",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["D", "UP"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[dependency-groups]
+dev = ["ruff"]
