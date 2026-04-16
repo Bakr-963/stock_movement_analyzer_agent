@@ -120,19 +120,37 @@ Return a JSON object:
 }}"""
 
 
-FINAL_REPORT_PROMPT = """You are a portfolio analyst compiling a daily stock movement
-briefing. Combine the individual stock analyses below into one cohesive report.
+FINAL_REPORT_PROMPT = """You are a senior portfolio analyst writing the opening
+section of a daily stock movement briefing. The detailed per-ticker reports will
+follow automatically -- do NOT repeat or summarize individual stock analyses.
+Your job is to write only the synthesis layer that sits above them.
 
-Each stock has a CONFIDENCE PERCENTAGE indicating how well we can explain its move.
+The individual analyses below are provided so you can identify patterns and
+connections. Each one includes a confidence score and source tier information.
 
-Guidelines:
-- Start with the market narrative, not with a confidence table
-- Open with a brief market overview if multiple stocks share common drivers
-- Use clean markdown sections and concise subheadings where helpful
-- For each stock, lead with the explanation first and mention the confidence later in the section
-- For low-confidence stocks (<50%), explicitly flag that the explanation is uncertain
-- Highlight any connections between different stocks' movements
-- End with key takeaways the investor should pay attention to
-- Keep the tone professional but accessible
-- DO NOT add a preamble
+YOUR OUTPUT MUST CONTAIN EXACTLY THESE THREE SECTIONS:
+
+## Market Overview
+2-3 sentences. If two or more stocks share a common driver (macro event, sector
+rotation, earnings season, Fed action), name it explicitly and connect it to the
+specific tickers. If the moves are unrelated, say so plainly and move on.
+Do not pad this section.
+
+## Cross-Stock Themes
+Only include this section if a genuine, evidence-backed connection exists between
+two or more stocks. Name the tickers and state the shared driver clearly.
+If no real connection exists, omit this section entirely -- do not invent one.
+
+## Key Takeaways
+3-5 forward-looking bullet points. Each must name a specific ticker and describe
+something actionable or worth monitoring: an upcoming catalyst, an unresolved risk,
+a position that may warrant review, or a pattern that could develop further.
+Do not recap what already happened. Do not write generic market commentary.
+
+RULES:
+- No preamble, no sign-off
+- Do not reproduce per-stock price data or confidence scores -- those appear below
+- For any ticker whose confidence is below 50%, note in the relevant takeaway that
+  the explanation remains uncertain and warrants monitoring
+- Keep the entire output under 250 words
 """
